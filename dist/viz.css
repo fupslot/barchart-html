@@ -8,7 +8,7 @@ ul.fun-container {
 
 ul.fun-container li.fun-column {
   display: inline-block;
-  width: 90px;
+  width: 110px;
   padding: 10px 10px;
   vertical-align: top;
   background-color: #f6f6ff;
@@ -107,9 +107,8 @@ ul.fun-container .fun-bar-value .fun-bar-value-bottom.verticaly.fun-label:before
 }
 
 ul.fun-container .fun-panel-value {
-  height: 26px;
-  padding: 8px 0;
-  margin-top: 10px;
+  height: 32px;
+  margin-top: 8px;
   overflow: hidden;
   font-size: 13px;
   line-height: 16px;
@@ -119,6 +118,7 @@ ul.fun-container .fun-panel-value {
 ul.fun-container .fun-panel-value.overall {
   font-size: 28px;
   font-weight: bolder;
+  line-height: 30px;
 }
 
 ul.fun-container .fun-panel-value.compare {
