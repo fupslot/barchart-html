@@ -40,26 +40,30 @@
 
     function drawColumn (model, index) {
         var events
-          , columnEl
-          , eventName;
+          , columnEl;
 
         events = model.events;
 
-        eventName = $('<div>')
-                    .addClass('fun-event-name')
-                    .attr('title', model.name)
-                    .text(model.name);
+        columnEl = $('<li>')
+            .addClass('fun-column')
+            .append($('<div>')
+                .addClass('fun-event-name')
+                .attr('title', model.name)
+                .text(model.name));
 
-        columnEl = $('<li>').addClass('fun-column')
-                    .append(eventName)
-                    .append($('<div>').addClass('fun-bar-value'));
+        if (this.options.brakedown) {
+            // Draw a brakedown
+            drawBrakedown.call(this, columnEl, model, index);
+        }
+        else {
+            // Draw a bar
+            drawBar.call(this, columnEl, model, index);
+        }
 
-        // Draw a bar
-        
+        // Draw panels
         var panels = ['actual'];
         if (this.options.compare) panels.push('compare');
         
-        // Draw panels
         panels.forEach($.proxy(function (val) {
             drawPanelValue.call(this, columnEl, model, index, val === 'compare');
         }, this));
@@ -67,15 +71,39 @@
         this.$el.append(columnEl);
     }
 
-    function drawBar(el) {
-        /*
-        <div class="fun-bar-value greenish">
-            <div class="fun-bar-value-top"></div>
-            <div class="fun-bar-value-bottom fun-label verticaly"
-               data-value="300K" style="top: 0%">
-            </div>
-        </div>
-        */
+    function drawBrakedown (el, model, columnIndex) {
+        var barEl;
+        barEl = $('<ul>').addClass('fun-bar');
+        model.sections.forEach($.proxy(function (section) {
+            var el = $('<li>');
+            drawBar.call(this, el, section, columnIndex);
+            el.appendTo(barEl);
+        }), this);
+
+        el.append(barEl);
+    }
+
+    function drawBar(el, model, columnIndex) {
+        var isBrakeDown
+          , colorName
+          , labelOrientation;
+
+        isBrakeDown = this.options.brakedown;
+        colorName   = this.options.barColorName;
+        labelOrientation = isBrakeDown ? 'verticaly' : 'horizontaly';
+
+        $('<div>')
+            .addClass('fun-bar-value')
+            .addClass(colorName + 'ish')
+            .append($('<div>')
+                .addClass('fun-bar-value-top'))
+            .append($('<div>')
+                .addClass('fun-bar-value-bottom')
+                .addClass('fun-label')
+                .addClass(labelOrientation)
+                .attr('data-value', model.value)
+                .css('top', '0%'))
+            .appendTo(el);
     }
 
     function drawPanelValue (el, model, columnIndex, isCompare) {

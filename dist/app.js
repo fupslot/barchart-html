@@ -5,7 +5,7 @@ $(function () {
     
     settings = {
         compare: true,
-        brakedown: false,
+        brakedown: true,
         events: ['Sign up', 'Add item', 'View cart', 'Purchase'],
         labels: ['did not bounce', 'looked at a product', 'put an item in a cart', 'completed a sale'],
         sections: [
