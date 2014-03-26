@@ -41,11 +41,10 @@ ul.fun-container {
     .fun-bar-value {
         height: 200px;
         position: relative;
-    
+        
         &.blueish {
             .fun-bar-value-bottom {
                 background: -webkit-linear-gradient(top, rgba(167,199,220,1) 0%,rgba(133,178,211,1) 100%); 
-                border-radius: 4px 4px 2px 2px;
             }
             .verticaly.fun-label:before {
                 color: #ddd;
@@ -77,6 +76,7 @@ ul.fun-container {
             top: 0;
             bottom: 0;
             z-index: 90;
+            box-shadow: inset 0px 0px 30px rgba(0,0,0,0.2);
         }
     
         .fun-bar-value-bottom {
@@ -84,15 +84,14 @@ ul.fun-container {
             position: absolute;
             top: 0;
             bottom: 0;
-            left: 1px;
-            right: 1px;
+            left: 0px;
+            right: 0px;
             z-index: 100;
-            box-shadow: 0px -1px 2px rgba(0,0,0,0.3);
-          
             &.fun-label:before {
                 content: attr(data-value);
                 display: block;
                 text-align: center;
+                text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
                 font-size: 14px;
                 line-height: 20px;
                 font-weight: bolder;
@@ -117,6 +116,16 @@ ul.fun-container {
                 left:0;
                 right: 0;
         
+            }
+        }
+
+        .highlighted {
+            background: #aad!important;
+            &.horizontaly.fun-label:before {
+                background-color: #c8c8ec!important;
+            }
+            &.fun-bar-value-top {
+                background: #c8c8ec!important;
             }
         }
     }
@@ -159,14 +168,14 @@ ul.fun-container {
 .fun-container.breakdown {
     .fun-column { width: 110px; }
   
-    &.one .fun-bar li { width: 98px;}
-    &.two .fun-bar li { width: 47px;}
-    &.three .fun-bar li { width: 30px;}
+    &.one .fun-bar   li { width: 98px; }
+    &.two .fun-bar   li { width: 47px; }
+    &.three .fun-bar li { width: 30px; }
   
     ul.fun-bar {
         border: 2px dashed #c0c0c0;
         border-radius: 4px;
-        background-color: #fefefe;
+        // background-color: #fefefe;
         padding: 2px 4px;
         margin: 0;
         box-sizing: padding-box;
@@ -176,7 +185,7 @@ ul.fun-container {
         word-spacing: 0px;
         li {
             display: inline-block;
-            background-color: #fff;
+            // background-color: #fff;
             box-sizing: border-box;
             vertical-align: top;
             height: 100%;

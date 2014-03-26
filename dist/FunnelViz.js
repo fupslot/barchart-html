@@ -7,7 +7,8 @@
     defaults = {
         compare:   true,
         breakdown: false,
-        breakdownConversion: true,
+        showBreakdownConversion: false,
+        allowHighlight: true,
         events:    [],
         labels:    [],
         sections:  [],
@@ -15,9 +16,12 @@
     };
 
     function init () {
-        var sections
+        var self
+          , sections
           , bl
           , breakdownClazz;
+
+        self = this;
 
         if (this.el.tagName !== 'UL') throw Error('FunnelViz. Error: The root element must be an UL element');
 
@@ -47,6 +51,17 @@
         
         // Show element
         this.$el.fadeIn();
+        this.$el.find('[role=bar]').on('click', function(){
+            var el;
+            el = $(this).toggleClass('highlighted');
+            if (el.hasClass('highlighted')) {
+
+            }
+            else {
+
+            }
+            
+        });
     }
 
     function drawColumn (model, index) {
@@ -117,11 +132,13 @@
             .addClass(getBarColor.call(this, index))
             .append($('<div>')
                 .addClass('fun-bar-value-top')
+                .attr('role', 'bar')
                 .css('top', model.GHBar+'%'))
             .append($('<div>')
                 .addClass('fun-bar-value-bottom')
                 .addClass('fun-label')
                 .addClass(labelOrientation)
+                .attr('role', 'bar')
                 .attr('title', function(){
                     var title, conv;
                     conv  = numeral(model.conversion).format('0.0') + '%';
@@ -130,7 +147,7 @@
                 })
                 .attr('data-value', model.value)
                 .attr('data-conv', function() {
-                    if (self.options.breakdownConversion) {
+                    if (self.options.showBreakdownConversion) {
                         return isFirst ? '' : ' / ' + numeral(model.conversion).format('0.0') + '%';
                     }
                 })
@@ -292,7 +309,8 @@
         this.options   = options;
         this._defaults = defaults;
         this._name     = pluginName;
-        
+        // Holds a list of bars that were highlighted by a user
+        this.highlighted  = [];
         this.init();
     }
 

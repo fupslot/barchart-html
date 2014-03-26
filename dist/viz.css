@@ -43,7 +43,6 @@ ul.fun-container .fun-bar-value {
 
 ul.fun-container .fun-bar-value.blueish .fun-bar-value-bottom {
   background: -webkit-linear-gradient(top, #a7c7dc 0%, #85b2d3 100%);
-  border-radius: 4px 4px 2px 2px;
 }
 
 ul.fun-container .fun-bar-value.blueish .verticaly.fun-label:before {
@@ -72,17 +71,17 @@ ul.fun-container .fun-bar-value .fun-bar-value-top {
   z-index: 90;
   width: 100%;
   background-color: #eee;
+  box-shadow: inset 0 0px 30px rgba(0, 0, 0, 0.2);
 }
 
 ul.fun-container .fun-bar-value .fun-bar-value-bottom {
   position: absolute;
   top: 0;
-  right: 1px;
+  right: 0;
   bottom: 0;
-  left: 1px;
+  left: 0;
   z-index: 100;
   background-color: #008cc9;
-  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.3);
 }
 
 ul.fun-container .fun-bar-value .fun-bar-value-bottom.fun-label:before {
@@ -91,6 +90,7 @@ ul.fun-container .fun-bar-value .fun-bar-value-bottom.fun-label:before {
   font-weight: bolder;
   line-height: 20px;
   text-align: center;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   content: attr(data-value);
 }
 
@@ -115,6 +115,18 @@ ul.fun-container .fun-bar-value .fun-bar-value-bottom.verticaly.fun-label:before
   content: attr(data-value) attr(data-conv);
   -webkit-transform: rotateZ(-90deg);
      -moz-transform: rotateZ(-90deg);
+}
+
+ul.fun-container .fun-bar-value .highlighted {
+  background: #aad!important;
+}
+
+ul.fun-container .fun-bar-value .highlighted.horizontaly.fun-label:before {
+  background-color: #c8c8ec!important;
+}
+
+ul.fun-container .fun-bar-value .highlighted.fun-bar-value-top {
+  background: #c8c8ec!important;
 }
 
 ul.fun-container .fun-panel-value {
@@ -186,7 +198,6 @@ ul.fun-container .minus:after {
   font-size: 0;
   letter-spacing: 0;
   word-spacing: 0;
-  background-color: #fefefe;
   border: 2px dashed #c0c0c0;
   border-radius: 4px;
   box-sizing: padding-box;
@@ -199,6 +210,5 @@ ul.fun-container .minus:after {
   margin-right: 4px;
   vertical-align: top;
   list-style: none;
-  background-color: #fff;
   box-sizing: border-box;
 }

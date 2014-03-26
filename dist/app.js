@@ -6,10 +6,11 @@ $(function () {
     settings = {
         compare: true,
         breakdown: [0,1,2],
-        breakdownConversion: false,
         // breakdown: false,
+        
         events: ['Sign up', 'Add item', 'View cart', 'Purchase'],
         labels: ['did not bounce', 'looked at a product', 'put an item in a cart', 'completed a sale'],
+        
         sections: [
             {
                 name:    'Landing page #1',
