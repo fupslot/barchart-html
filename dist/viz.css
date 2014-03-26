@@ -56,12 +56,12 @@ ul.fun-container .fun-bar-value.greenish .fun-bar-value-bottom {
 }
 
 ul.fun-container .fun-bar-value.redish .fun-bar-value-bottom {
-  background: -webkit-linear-gradient(top, #e05c1a 0%, #ef5500 100%);
+  background: -webkit-linear-gradient(top, #ef5500 0%, #e05c1a 100%);
   background-color: #ef5500;
 }
 
 ul.fun-container .fun-bar-value.yellowish .fun-bar-value-bottom {
-  background: -webkit-linear-gradient(top, #d6d619 0%, #dde100 100%);
+  background: -webkit-linear-gradient(top, #dde100 0%, #d6d619 100%);
   background-color: #dde100;
 }
 
@@ -112,6 +112,7 @@ ul.fun-container .fun-bar-value .fun-bar-value-bottom.verticaly.fun-label:before
   right: 0;
   bottom: 10px;
   left: 0;
+  content: attr(data-value) attr(data-conv);
   -webkit-transform: rotateZ(-90deg);
      -moz-transform: rotateZ(-90deg);
 }

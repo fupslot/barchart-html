@@ -7,6 +7,7 @@
     defaults = {
         compare:   true,
         breakdown: false,
+        breakdownConversion: true,
         events:    [],
         labels:    [],
         sections:  [],
@@ -104,8 +105,11 @@
     }
 
     function drawBar(el, model, columnIndex, index) {
-        var labelOrientation;
-        
+        var self, labelOrientation, isFirst;
+
+        self    = this;
+        isFirst = columnIndex === 0;
+
         labelOrientation = this.isBreakdown() ? 'verticaly' : 'horizontaly';
 
         $('<div>')
@@ -118,8 +122,18 @@
                 .addClass('fun-bar-value-bottom')
                 .addClass('fun-label')
                 .addClass(labelOrientation)
-                .attr('title', model.name)
+                .attr('title', function(){
+                    var title, conv;
+                    conv  = numeral(model.conversion).format('0.0') + '%';
+                    title = isFirst ? model.name : model.name + '\r\n' + model.value + ' / ' + conv;
+                    return title;
+                })
                 .attr('data-value', model.value)
+                .attr('data-conv', function() {
+                    if (self.options.breakdownConversion) {
+                        return isFirst ? '' : ' / ' + numeral(model.conversion).format('0.0') + '%';
+                    }
+                })
                 .css('top', model.HBar+'%'))
             .appendTo(el);
     }
@@ -204,27 +218,28 @@
         };
 
         var eventTotals = function (eventName, index) {
-            var a,b,c, curr, prev, HBar, GHBar;
+            var a,b,c, curr, prev, isFirst, HBar, GHBar;
             
+            isFirst = index === 0;
             a = getTotalValue(index, 'actual');
             
             curr = index;
             // First column always have an overall values
-            prev = index === 0 ? options.events.length - 1 : index -1;
+            prev = isFirst ? options.events.length - 1 : index -1;
             
             c = getConversionValue(curr, prev);
             b = c - getCompareValue(curr, prev);
 
             HBar  = 100 - (a / getTotalValue(0, 'actual')) * 100;
-            GHBar = index === 0 ? 0 : 100 - (getTotalValue(index - 1, 'actual') / getTotalValue(0, 'actual')) * 100;
+            GHBar = isFirst ? 0 : 100 - (getTotalValue(index - 1, 'actual') / getTotalValue(0, 'actual')) * 100;
 
             return {
                 name:       eventName,
                 value:      a,
                 compare:    b,
                 conversion: c,
-                HBar:       HBar,  // The hight of the bar
-                GHBar:      GHBar  // Thh hight of the gray area behind the bar
+                HBar:       HBar,  // The top shift(%) for the bar
+                GHBar:      GHBar  // The top shift(%) for the gray area behind the bar
             };
         };
 
@@ -232,18 +247,18 @@
             var sections = [];
                         
             options.sections.forEach(function (s) {
-                var section
-                  , value
-                  , HBar
-                  , GHBar;
+                var section, value, conv, HBar, GHBar, isFirst;
 
-                value = s.actual[index];
-                HBar  = 100 - (value / s.actual[0]) * 100;
-                GHBar = index === 0 ? 0 : 100 - (s.actual[index - 1] / s.actual[0]) * 100;
+                isFirst = index === 0;
+                value   = s.actual[index];
+                conv    = isFirst ? 0 : (s.actual[index] / s.actual[index - 1]) * 100;
+                HBar    = 100 - (value / s.actual[0]) * 100;
+                GHBar   = isFirst ? 0 : 100 - (s.actual[index - 1] / s.actual[0]) * 100;
 
                 section   = {};                
                 section.name  = s.name;
                 section.value = value;
+                section.conversion = conv;
                 section.HBar  = HBar;
                 section.GHBar = GHBar;
                 sections.push(section);
