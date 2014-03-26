@@ -6,93 +6,101 @@
     <link rel="stylesheet" href="static/css/base-css-v1.0.102.7-522-g1a249bf.min.css">
     <link rel="stylesheet" href="static/css/document-css-v1.0.102.7-522-g1a249bf.min.css">
     <link rel="stylesheet" type="text/css" href="viz.css">
+    <style type="text/css">
+        [role=visualization] { display: none; }
+    </style>
     <script src="vendor/jquery/dist/jquery.js" type="application/javascript"></script>
     <script src="vendor/lodash/dist/lodash.js" type="application/javascript"></script>
     <script src="vendor/numeral/numeral.js" type="application/javascript"></script>
+    <script src="FunnelViz.js"></script>
+    <script src="app.js"></script>
 </head>
 <body>
+    <h2>Funnel Viz - Dinamic View</h2>
+    <ul id="funnel-viz-default" role="vizualization"></ul>
+
     <h2>Funnel Viz - Static View</h2>
 
     <ul class="fun-container">
     
-    <li class="fun-column">
-        <div class="fun-event-name">Login</div>
-      
-        <div class="fun-bar-value blueish">
-            <div class="fun-bar-value-top"></div>
-            <div class="fun-bar-value-bottom fun-label horizontaly"
-                 data-value="300K">
+        <li class="fun-column">
+            <div class="fun-event-name">Login</div>
+          
+            <div class="fun-bar-value blueish">
+                <div class="fun-bar-value-top"></div>
+                <div class="fun-bar-value-bottom fun-label horizontaly"
+                     data-value="300K">
+                </div>
             </div>
-        </div>
-      
-        <div class="fun-panel-value overall">27.5%</div>
-        <div class="fun-panel-value overall compare">4%</div>
-    </li>
+          
+            <div class="fun-panel-value overall">27.5</div>
+            <div class="fun-panel-value overall compare">4</div>
+        </li>
     
     
-    <li class="fun-column">
-      <div class="fun-event-name">Event Name</div>
+        <li class="fun-column">
+          <div class="fun-event-name">Event Name</div>
 
-      <div class="fun-bar-value blueish">
-        <div class="fun-bar-value-top" style="top: 10%"></div>
-        <div class="fun-bar-value-bottom fun-label horizontaly"
-             data-value="210K" style="top: 30%">
-        </div>
-      </div>
-      
-      <div class="fun-panel-value">
-        <span class="minus">27.5%</span>
-        did something horrible
-      </div>
-      <div class="fun-panel-value compare">
-        <span class="plus">4%</span>
-        20 days ago very long time ago
-      </div>
-    </li>
-  </ul>
+          <div class="fun-bar-value blueish">
+            <div class="fun-bar-value-top" style="top: 10%"></div>
+            <div class="fun-bar-value-bottom fun-label horizontaly"
+                 data-value="210K" style="top: 30%">
+            </div>
+          </div>
+          
+          <div class="fun-panel-value">
+            <span class="minus">27.5%</span>
+            did something horrible
+          </div>
+          <div class="fun-panel-value compare">
+            <span class="plus">4%</span>
+            20 days ago very long time ago
+          </div>
+        </li>
+    </ul>
   
   
-  <ul class="fun-container breakdown three">    
-    <li class="fun-column">
-      <div class="fun-event-name">Event Name</div>
-      <div class="fun-bar">
-        <ul>
-          <li>
-            <div class="fun-bar-value greenish">
-              <div class="fun-bar-value-top"></div>
-              <div class="fun-bar-value-bottom fun-label verticaly"
-                   data-value="300K" style="top: 0%">
-              </div>
+    <ul class="fun-container breakdown three">    
+        <li class="fun-column">
+            <div class="fun-event-name">Event Name</div>
+            <div class="fun-bar">
+                <ul>
+                    <li>
+                        <div class="fun-bar-value greenish">
+                            <div class="fun-bar-value-top"></div>
+                            <div class="fun-bar-value-bottom fun-label verticaly"
+                               data-value="300K" style="top: 0%">
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fun-bar-value redish">
+                            <div class="fun-bar-value-top"></div>
+                            <div class="fun-bar-value-bottom fun-label verticaly"
+                               data-value="210K" style="top: 30%">
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fun-bar-value yellowish">
+                            <div class="fun-bar-value-top"></div>
+                            <div class="fun-bar-value-bottom fun-label verticaly"
+                               data-value="110K" style="top: 63.3%">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-          </li>
-          <li>
-            <div class="fun-bar-value redish">
-              <div class="fun-bar-value-top"></div>
-              <div class="fun-bar-value-bottom fun-label verticaly"
-                   data-value="210K" style="top: 30%">
-              </div>
+            <div class="fun-panel-value">
+                <span class="minus">27.5%</span>
+                did something horrible
             </div>
-          </li>
-          <li>
-            <div class="fun-bar-value yellowish">
-              <div class="fun-bar-value-top"></div>
-              <div class="fun-bar-value-bottom fun-label verticaly"
-                   data-value="110K" style="top: 63.3%">
-              </div>
+            <div class="fun-panel-value compare">
+                <span class="plus">4%</span>
+                20 days ago very long time ago
             </div>
-          </li>
-        </ul>
-      </div>
-      <div class="fun-panel-value">
-        <span class="minus">27.5%</span>
-        did something horrible
-      </div>
-      <div class="fun-panel-value compare">
-        <span class="plus">4%</span>
-        20 days ago very long time ago
-      </div>
-    </li>
-  </ul>
+        </li>
+    </ul>
     <script src="http://localhost:9001/livereload.js"></script>
 </body>
 </html>

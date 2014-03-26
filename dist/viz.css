@@ -1,8 +1,9 @@
 ul.fun-container {
   padding: 4px;
+  margin: 0;
   overflow: hidden;
   white-space: nowrap;
-  list-style-type: none;
+  list-style: none;
   background-color: #eee;
 }
 
@@ -33,7 +34,7 @@ ul.fun-container .fun-bar-value {
 
 ul.fun-container .fun-bar-value.blueish .fun-bar-value-bottom {
   background: -webkit-linear-gradient(top, #a7c7dc 0%, #85b2d3 100%);
-  background-color: #008cc9;
+  border-radius: 4px 4px 2px 2px;
 }
 
 ul.fun-container .fun-bar-value.blueish .verticaly.fun-label:before {
@@ -116,9 +117,13 @@ ul.fun-container .fun-panel-value {
 }
 
 ul.fun-container .fun-panel-value.overall {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bolder;
   line-height: 30px;
+}
+
+ul.fun-container .fun-panel-value.overall:after {
+  content: '% GC';
 }
 
 ul.fun-container .fun-panel-value.compare {
@@ -127,6 +132,7 @@ ul.fun-container .fun-panel-value.compare {
 }
 
 ul.fun-container .plus {
+  padding-right: 4px;
   color: green;
 }
 
@@ -134,12 +140,17 @@ ul.fun-container .plus:before {
   content: '+';
 }
 
+ul.fun-container .plus:after {
+  content: '%';
+}
+
 ul.fun-container .minus {
+  padding-right: 4px;
   color: red;
 }
 
-ul.fun-container .minus:before {
-  content: '-';
+ul.fun-container .minus:after {
+  content: '%';
 }
 
 .fun-container.breakdown .fun-column {

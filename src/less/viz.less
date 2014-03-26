@@ -8,7 +8,8 @@
 ul.fun-container {
     overflow: hidden;
     background-color: #eee;
-    list-style-type: none;
+    list-style: none;
+    margin: 0;
     padding: 4px;
     white-space: nowrap;
   
@@ -35,8 +36,8 @@ ul.fun-container {
     
         &.blueish {
             .fun-bar-value-bottom {
-                background-color: #008cc9;
                 background: -webkit-linear-gradient(top, rgba(167,199,220,1) 0%,rgba(133,178,211,1) 100%); 
+                border-radius: 4px 4px 2px 2px;
             }
             .verticaly.fun-label:before {
                 color: #ddd;
@@ -121,9 +122,10 @@ ul.fun-container {
         
         
         &.overall {
-            font-size: 28px;
+            font-size: 24px;
             line-height: 30px;
             font-weight: bolder;
+            &:after{ content:'% GC'}
         }
         &.compare {
             padding-top: 15px;
@@ -133,10 +135,13 @@ ul.fun-container {
 
     .plus {
         &:before {content: '+';}
+        &:after  {content: '%';}
+        padding-right: 4px;
         color: green;
     }
     .minus {
-        &:before {content: '-';}
+        &:after  {content: '%';}
+        padding-right: 4px;
         color: red;
     }
 }

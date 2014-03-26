@@ -2,6 +2,7 @@ module.exports = function(grunt) {
   //grunt plugins
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-recess');
   
   //config
@@ -19,6 +20,17 @@ module.exports = function(grunt) {
       }
     },
 
+    concat: {
+      funnel: {
+        src: ['src/js/funnel/**/*.*'],
+        dest: 'dist/FunnelViz.js'
+      },
+      app: {
+        src: ['src/js/app/**/*.*'],
+        dest: 'dist/app.js'
+      }
+    },
+
     recess: {
       less: {
         options: { compile: true },
@@ -29,8 +41,8 @@ module.exports = function(grunt) {
 
     watch: {
       css: {
-        files: ['src/less/**/*.less', 'dist/index.html'],
-        tasks: ['recess:less'],
+        files: ['src/**/*.*', 'dist/index.html'],
+        tasks: ['recess:less', 'concat'],
         options: {
           livereload: {
             port: 9001,
