@@ -2,8 +2,11 @@ ul.fun-container {
   padding: 4px;
   margin: 0;
   overflow: hidden;
+  font-size: 0;
+  letter-spacing: 0;
+  word-spacing: 0;
   white-space: nowrap;
-  list-style: none;
+  cursor: default;
   background-color: #eee;
 }
 
@@ -11,8 +14,14 @@ ul.fun-container li.fun-column {
   display: inline-block;
   width: 110px;
   padding: 10px 10px;
+  margin-right: 4px;
   vertical-align: top;
+  list-style: none;
   background-color: #f6f6ff;
+}
+
+ul.fun-container li.fun-column:last-child {
+  margin-right: 0;
 }
 
 ul.fun-container .fun-event-name {
@@ -157,6 +166,10 @@ ul.fun-container .minus:after {
   width: 110px;
 }
 
+.fun-container.breakdown.one .fun-bar li {
+  width: 98px;
+}
+
 .fun-container.breakdown.two .fun-bar li {
   width: 47px;
 }
@@ -165,26 +178,26 @@ ul.fun-container .minus:after {
   width: 30px;
 }
 
-.fun-container.breakdown .fun-bar {
+.fun-container.breakdown ul.fun-bar {
+  height: 100%;
   padding: 2px 4px;
+  margin: 0;
+  font-size: 0;
+  letter-spacing: 0;
+  word-spacing: 0;
   background-color: #fefefe;
   border: 2px dashed #c0c0c0;
   border-radius: 4px;
-}
-
-.fun-container.breakdown .fun-bar ul {
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  list-style: none;
   box-sizing: padding-box;
 }
 
-.fun-container.breakdown .fun-bar ul li {
+.fun-container.breakdown ul.fun-bar li {
   position: relative;
   display: inline-block;
   height: 100%;
+  margin-right: 4px;
   vertical-align: top;
+  list-style: none;
   background-color: #fff;
   box-sizing: border-box;
 }

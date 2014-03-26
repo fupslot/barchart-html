@@ -6,7 +6,7 @@
 
     defaults = {
         compare:   true,
-        brakedown: false,
+        breakdown: false,
         events:    [],
         labels:    [],
         sections:  [],
@@ -14,13 +14,23 @@
     };
 
     function init () {
-        var sections;
+        var sections
+          , bl
+          , breakdownClazz;
 
         if (this.el.tagName !== 'UL') throw Error('FunnelViz. Error: The root element must be an UL element');
 
-        // Hide element
+        if (this.isBreakdown()) {
+            breakdownClazz = 'breakdown ';
+            bl = this.options.breakdown.length;
+            // Three is the max. From the design point of view.
+            breakdownClazz += ['one', 'two'][bl - 1] || 'three';
+        }
+        
+        // Hide element. Privents blinking on slow machines.
         this.$el
             .addClass('fun-container')
+            .addClass(breakdownClazz)
             .css('display', 'none');
 
         sections = this.options.sections;
@@ -51,9 +61,9 @@
                 .attr('title', model.name)
                 .text(model.name));
 
-        if (this.options.brakedown) {
-            // Draw a brakedown
-            drawBrakedown.call(this, columnEl, model, index);
+        if (this.isBreakdown()) {
+            // Draw a breakdown
+            drawBreakdown.call(this, columnEl, model, index);
         }
         else {
             // Draw a bar
@@ -71,38 +81,46 @@
         this.$el.append(columnEl);
     }
 
-    function drawBrakedown (el, model, columnIndex) {
-        var barEl;
+    function drawBreakdown (el, model, columnIndex) {
+        var barEl
+          , sections;
+        
         barEl = $('<ul>').addClass('fun-bar');
-        model.sections.forEach($.proxy(function (section) {
-            var el = $('<li>');
-            drawBar.call(this, el, section, columnIndex);
+
+        sections = this.options.breakdown;
+
+        sections.forEach($.proxy(function (sectionIndex, index) {
+            var el, section;
+            
+            section = model.sections[sectionIndex];
+            if (!section) return;
+
+            el = $('<li>');
+            drawBar.call(this, el, section, columnIndex, index);
             el.appendTo(barEl);
         }), this);
 
         el.append(barEl);
     }
 
-    function drawBar(el, model, columnIndex) {
-        var isBrakeDown
-          , colorName
-          , labelOrientation;
-
-        isBrakeDown = this.options.brakedown;
-        colorName   = this.options.barColorName;
-        labelOrientation = isBrakeDown ? 'verticaly' : 'horizontaly';
+    function drawBar(el, model, columnIndex, index) {
+        var labelOrientation;
+        
+        labelOrientation = this.isBreakdown() ? 'verticaly' : 'horizontaly';
 
         $('<div>')
             .addClass('fun-bar-value')
-            .addClass(colorName + 'ish')
+            .addClass(getBarColor.call(this, index))
             .append($('<div>')
-                .addClass('fun-bar-value-top'))
+                .addClass('fun-bar-value-top')
+                .css('top', model.GHBar+'%'))
             .append($('<div>')
                 .addClass('fun-bar-value-bottom')
                 .addClass('fun-label')
                 .addClass(labelOrientation)
+                .attr('title', model.name)
                 .attr('data-value', model.value)
-                .css('top', '0%'))
+                .css('top', model.HBar+'%'))
             .appendTo(el);
     }
 
@@ -186,31 +204,48 @@
         };
 
         var eventTotals = function (eventName, index) {
-            var a,b,c, curr, prev;
+            var a,b,c, curr, prev, HBar, GHBar;
             
             a = getTotalValue(index, 'actual');
             
             curr = index;
             // First column always have an overall values
-            prev = index === 0 ? options.events.length -1 : index -1;
+            prev = index === 0 ? options.events.length - 1 : index -1;
             
             c = getConversionValue(curr, prev);
             b = c - getCompareValue(curr, prev);
+
+            HBar  = 100 - (a / getTotalValue(0, 'actual')) * 100;
+            GHBar = index === 0 ? 0 : 100 - (getTotalValue(index - 1, 'actual') / getTotalValue(0, 'actual')) * 100;
 
             return {
                 name:       eventName,
                 value:      a,
                 compare:    b,
                 conversion: c,
+                HBar:       HBar,  // The hight of the bar
+                GHBar:      GHBar  // Thh hight of the gray area behind the bar
             };
         };
 
         var eventSections = function (index) {
             var sections = [];
-
+                        
             options.sections.forEach(function (s) {
-                var section  = {};
-                section.value = s.actual[index];
+                var section
+                  , value
+                  , HBar
+                  , GHBar;
+
+                value = s.actual[index];
+                HBar  = 100 - (value / s.actual[0]) * 100;
+                GHBar = index === 0 ? 0 : 100 - (s.actual[index - 1] / s.actual[0]) * 100;
+
+                section   = {};                
+                section.name  = s.name;
+                section.value = value;
+                section.HBar  = HBar;
+                section.GHBar = GHBar;
                 sections.push(section);
             });
 
@@ -226,6 +261,11 @@
         var events;
         events = options.events.map(transformedEvent);
         return events;
+    }
+
+    function getBarColor(index) {
+        if (index === void 0) return this.options.barColorName + 'ish';
+        return (['green', 'red'][index] || 'yellow') + 'ish';
     }
 
     function Plugin (el, options) {
@@ -245,6 +285,10 @@
         init: function () {
             init.apply(this);
         },
+
+        isBreakdown: function () {
+            return $.isArray(this.options.breakdown);
+        }
     };
 
     $.fn[pluginName] = function (method) {
