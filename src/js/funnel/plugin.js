@@ -15,44 +15,6 @@
         barColorName: 'blue'
     };
 
-    function init () {
-        var self
-          , sections
-          , bl
-          , breakdownClazz;
-
-        self = this;
-
-        if (this.el.tagName !== 'UL') throw Error('FunnelViz. Error: The root element must be an UL element');
-
-        if (this.isBreakdown()) {
-            breakdownClazz = 'breakdown ';
-            bl = this.options.breakdown.length;
-            // Three is the max. From the design point of view.
-            breakdownClazz += ['one', 'two'][bl - 1] || 'three';
-        }
-        
-        // Hide element. Privents blinking on slow machines.
-        this.$el
-            .addClass('fun-container')
-            .addClass(breakdownClazz)
-            .css('display', 'none');
-
-        sections = this.options.sections;
-
-        // Convert settings to a convenient structure
-        this._events = transformData2FunnelVizFormat(this.options);
-
-        // console.log(this.options); // !!!
-        // console.log(this._events); // !!! 
-        
-        // Draw an event
-        this._events.forEach($.proxy(drawColumn, this));
-        
-        // Show element
-        this.$el.fadeIn();
-    }
-
     function drawColumn (model, index) {
         var events
           , columnEl;
@@ -322,7 +284,55 @@
 
     Plugin.prototype = {
         init: function () {
-            init.apply(this);
+            // init.apply(this);
+            var l, breakdownClazz;
+
+            if (this.el.tagName !== 'UL') throw Error('BarChartHTML. Error: The root element must be an UL element');
+
+            if (this.isBreakdown()) {
+                breakdownClazz = 'breakdown ';
+                l = this.options.breakdown.length;
+                // Three is the max. From the design point of view.
+                breakdownClazz += ['one', 'two'][l - 1] || 'three';
+            }
+            
+            // Hide element. Privents blinking on slow machines.
+            this.$el
+                .addClass('fun-container')
+                .addClass(breakdownClazz);
+
+            this.draw();
+        },
+
+        draw: function (options) {
+            // Hide element. Privents blinking on slow machines.
+            this.$el.css('display', 'none');
+
+            options = options || this.options;
+            // Convert settings to a convenient structure
+            this._events = transformData2FunnelVizFormat(options);
+
+            // console.log(this.options); // !!!
+            // console.log(this._events); // !!! 
+            
+            // Draw an event
+            this._events.forEach($.proxy(drawColumn, this));
+            
+            // Show element
+            this.$el.fadeIn();
+        },
+
+        destroy: function () {
+            var el, obj;
+            
+            el = this.$el;
+            obj = el.data('plugin_'+pluginName);
+
+            if (obj !== void 0) {
+                el.removeClass('fun-container breakdown one two three');
+                el.removeData('plugin_'+pluginName);
+                el.children().remove();
+            }
         },
 
         isBreakdown: function () {

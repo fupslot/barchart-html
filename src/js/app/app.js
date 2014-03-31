@@ -31,4 +31,11 @@ $(function () {
     };
 
     $('#funnel-viz-default').BarChartHTML(settings);
+    $('#destroy').on('click', function () {
+        $('#funnel-viz-default').BarChartHTML('destroy');
+    });
+    $('#init').on('click', function () {
+        $('#funnel-viz-default').BarChartHTML(settings);
+    });
+
 });
