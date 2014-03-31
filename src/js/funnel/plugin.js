@@ -1,7 +1,7 @@
 ;(function($, window, document, undefined) {
     'use strict';
 
-    var pluginName = 'FunnelViz'
+    var pluginName = 'BarChartHTML'
       , defaults;
 
     defaults = {
@@ -51,17 +51,6 @@
         
         // Show element
         this.$el.fadeIn();
-        this.$el.find('[role=bar]').on('click', function(){
-            var el;
-            el = $(this).toggleClass('highlighted');
-            if (el.hasClass('highlighted')) {
-
-            }
-            else {
-
-            }
-            
-        });
     }
 
     function drawColumn (model, index) {
@@ -120,12 +109,27 @@
     }
 
     function drawBar(el, model, columnIndex, index) {
-        var self, labelOrientation, isFirst;
+        var self
+          , labelOrientation
+          , isFirst
+          , onHighlightEvent;
 
         self    = this;
         isFirst = columnIndex === 0;
 
         labelOrientation = this.isBreakdown() ? 'verticaly' : 'horizontaly';
+
+        onHighlightEvent = function (e) {
+            var el;
+            el = $(e.currentTarget).toggleClass('highlighted');
+            
+            if (el.hasClass('highlighted')) {
+                // addHighlighted()
+            }
+            else {
+                // removeHighlighted()
+            }
+        };
 
         $('<div>')
             .addClass('fun-bar-value')
@@ -133,7 +137,8 @@
             .append($('<div>')
                 .addClass('fun-bar-value-top')
                 .attr('role', 'bar')
-                .css('top', model.GHBar+'%'))
+                .css('top', model.GHBar+'%')
+                .on('click', onHighlightEvent))
             .append($('<div>')
                 .addClass('fun-bar-value-bottom')
                 .addClass('fun-label')
@@ -151,7 +156,8 @@
                         return isFirst ? '' : ' / ' + numeral(model.conversion).format('0.0') + '%';
                     }
                 })
-                .css('top', model.HBar+'%'))
+                .css('top', model.HBar+'%')
+                .on('click', onHighlightEvent))
             .appendTo(el);
     }
 
@@ -321,7 +327,7 @@
 
         isBreakdown: function () {
             return $.isArray(this.options.breakdown);
-        }
+        },
     };
 
     $.fn[pluginName] = function (method) {

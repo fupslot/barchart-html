@@ -23,7 +23,7 @@ module.exports = function(grunt) {
     concat: {
       funnel: {
         src: ['src/js/funnel/**/*.*'],
-        dest: 'dist/FunnelViz.js'
+        dest: 'dist/BarChartHTML.js'
       },
       app: {
         src: ['src/js/app/**/*.*'],
@@ -35,7 +35,7 @@ module.exports = function(grunt) {
       less: {
         options: { compile: true },
         src: ['src/less/viz.less'],
-        dest: 'dist/viz.css'
+        dest: 'dist/BarChartHTML.css'
       }
     },
 
