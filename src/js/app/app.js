@@ -4,9 +4,11 @@ $(function () {
 
     
     settings = {
-        // compare: true,
         breakdown: [0,1,2],
         // breakdown: false,
+
+        // It breakes default color order
+        colorIndexes: [2,0,1],
         
         events: ['Sign up', 'Add item', 'View cart', 'Purchase', 'Enjoyed'],
         labels: ['did not bounce', 'looked at a product', 'put an item in a cart', 'completed a sale'],

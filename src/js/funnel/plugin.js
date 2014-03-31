@@ -5,8 +5,9 @@
       , defaults;
 
     defaults = {
-        compare:   true,
         breakdown: false,
+        // Green, Red & Yellow
+        colorIndexes: [0,1,2],
         showBreakdownConversion: false,
         allowHighlight: true,
         events:    [],
@@ -264,8 +265,11 @@
     }
 
     function getBarColor(index) {
+        var colorIndex;
         if (index === void 0) return this.options.barColorName + 'ish';
-        return (['green', 'red'][index] || 'yellow') + 'ish';
+
+        colorIndex = this.options.colorIndexes[index];
+        return (['green', 'red'][colorIndex] || 'yellow') + 'ish';
     }
 
     function Plugin (el, options) {
