@@ -5,6 +5,7 @@
       , defaults;
 
     defaults = {
+        compare: false,
         breakdown: false,
         // Green, Red & Yellow
         colorIndexes: [0,1,2],

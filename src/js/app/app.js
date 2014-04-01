@@ -4,6 +4,7 @@ $(function () {
 
     
     settings = {
+        compare: true,
         breakdown: [0,1,2],
         // breakdown: false,
 
