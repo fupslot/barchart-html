@@ -111,13 +111,15 @@ ul.fun-container {
           
             &.verticaly.fun-label:before {
                 content: attr(data-value) attr(data-conv);
+                display: inline-block;
                 -webkit-transform: rotateZ(-90deg);
-                -moz-transform: rotateZ(-90deg);
                 position: absolute;
-                bottom: 10px;
-                left:0;
-                right: 0;
-        
+                bottom: 0px;
+                margin: 0 auto;
+                left: 0px;
+                right: 0px;
+                width: 10px;
+                text-align: left;
             }
         }
 
@@ -193,6 +195,9 @@ ul.fun-container {
             position: relative;
             list-style: none;
             margin-right: 4px;
+            &:last-child {
+                margin-right: 0px;
+            }
         }
         
     }

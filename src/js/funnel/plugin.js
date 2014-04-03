@@ -17,6 +17,15 @@
         barColorName: 'blue'
     };
 
+    function getParentSize (el) {
+        var parent;
+        parent = el.parent();
+        return {
+            width: parent.width(),
+            height: parent.height()
+        };
+    }
+
     function drawColumn (model, index) {
         var events
           , columnEl;
@@ -110,14 +119,14 @@
                 .attr('role', 'bar')
                 .attr('title', function(){
                     var title, conv;
-                    conv  = numeral(model.conversion).format('0.0') + '%';
+                    conv  = numeral(model.conversion).format('0.00') + '%';
                     title = isFirst ? model.name : model.name + '\r\n' + model.value + ' / ' + conv;
                     return title;
                 })
                 .attr('data-value', model.value)
                 .attr('data-conv', function() {
                     if (self.options.showBreakdownConversion) {
-                        return isFirst ? '' : ' / ' + numeral(model.conversion).format('0.0') + '%';
+                        return isFirst ? '' : ' / ' + numeral(model.conversion).format('0.00') + '%';
                     }
                 })
                 .css('top', model.HBar+'%')
@@ -145,7 +154,7 @@
                   , clazz;
 
                 value = !isCompare ? model.conversion : model.compare;
-                formatted = numeral(value).format('0.0');
+                formatted = numeral(value).format('0.00');
 
                 if (isCompare) $(this).addClass('compare');
                 
@@ -194,28 +203,35 @@
             a = getTotalValue(curr, 'compare');
             b = getTotalValue(prev, 'compare');
 
-            return (b / a) * 100;
+            return (a * b) !== 0 ? (b / a) * 100 : 0;
         };
 
         var getConversionValue = function (curr, prev) {
             var a,b;
             a = getTotalValue(curr, 'actual');
             b = getTotalValue(prev, 'actual');
-            return (b / a) * 100;
+            return (a * b) !== 0 ? a * 100 / b : 0;
+        };
+
+        var getGCValue = function(type, curr, prev) {
+            var a, b;
+            a = getTotalValue(curr, type);
+            b = getTotalValue(prev, type);
+            return (a * b) !== 0 ? (b / a) * 100 : 0;
         };
 
         var eventTotals = function (eventName, index) {
             var a,b,c, curr, prev, isFirst, HBar, GHBar;
-            
+
             isFirst = index === 0;
             a = getTotalValue(index, 'actual');
             
             curr = index;
             // First column always have an overall values
             prev = isFirst ? options.events.length - 1 : index -1;
-            
-            c = getConversionValue(curr, prev);
-            b = c - getCompareValue(curr, prev);
+
+            c = isFirst ? getGCValue('actual',  curr, prev) : getConversionValue(curr, prev);
+            b = isFirst ? getGCValue('compare', curr, prev) : c - getCompareValue(curr, prev);
 
             HBar  = 100 - (a / getTotalValue(0, 'actual')) * 100;
             GHBar = isFirst ? 0 : 100 - (getTotalValue(index - 1, 'actual') / getTotalValue(0, 'actual')) * 100;
@@ -289,7 +305,6 @@
 
     Plugin.prototype = {
         init: function () {
-            // init.apply(this);
             var l, breakdownClazz;
 
             if (this.el.tagName !== 'UL') throw Error('BarChartHTML. Error: The root element must be an UL element');
@@ -305,8 +320,9 @@
             this.$el
                 .addClass('fun-container')
                 .addClass(breakdownClazz);
-
+            
             this.draw();
+            this.resize();
         },
 
         draw: function (options) {
@@ -318,7 +334,7 @@
             this._events = transformData2FunnelVizFormat(options);
 
             // console.log(this.options); // !!!
-            // console.log(this._events); // !!! 
+            // console.log(this._events); // !!!
             
             // Draw an event
             this._events.forEach($.proxy(drawColumn, this));
@@ -340,8 +356,32 @@
             }
         },
 
-        isBreakdown: function () {
-            return $.isArray(this.options.breakdown);
+        resize: function (containerSize) {
+            var cc, cp, cw, cnw, bc, bw, width, limit;
+
+            limit = 75;
+
+            if ($.isEmptyObject(containerSize)) containerSize = getParentSize(this.$el);
+            width = containerSize.width;
+
+            cc = this.options.events.length; // Total event count
+            cp = 20; // Column padding
+            cw = (((width - 8) - ((cc - 1) * 4)) / cc) - cp; // Column width
+            
+            if (cw < limit) cw = limit; // 80px per a Column
+            
+            this.$el.find('li.fun-column').css('width', cw + 'px');
+
+            if (this.isBreakdown()) {
+                bc  = this.options.breakdown.length; // Bar count
+                cnw = cw - 12;                       // Container width
+                bw  = (cnw - (4 * (bc - 1))) / bc;   // Bar width
+                this.$el.find('ul.fun-bar > li').css('width', bw + 'px');
+            }
+        },
+
+        isBreakdown: function (isEmpty) {
+            return $.isArray(this.options.breakdown) && this.options.breakdown.length !== 0;
         },
     };
 
