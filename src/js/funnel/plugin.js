@@ -166,9 +166,24 @@
                 return formatted
             })
             .append(function () {
-                var labels, label;
-                labels = self.options.labels || [];
-                label  = !isOverall ? labels[columnIndex - 1] : '';
+                var isLabels, labels, label, events, getPanelLabel;
+                
+                labels   = self.options.labels || [];
+                events   = self.options.events;
+                isLabels = labels.length !== 0;
+
+                getPanelLabel = function(columnIndex, isCompare, isLabels) {
+                    if (isLabels) {
+                        return isCompare ? 'Change' : labels[columnIndex - 1];
+                    }
+                    else {
+                        return isCompare ? 'Change' : 'Did ' + events[columnIndex - 1] + ' and ' + events[columnIndex];
+                    }
+                };
+                
+                label  = !isOverall ? getPanelLabel(columnIndex, isCompare, isLabels) : '';
+
+                $(this).attr('title', label); // In case if a label is long
                 return label || '';
             })
             .appendTo(el);

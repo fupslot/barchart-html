@@ -23,13 +23,10 @@ $(function () {
     settings = {
         compare: true,
         breakdown: [],
-        // breakdown: false,
-
         // It breakes default color order
         colorIndexes: [2,0,1],
         
         events: ['Sign up', 'Add item', 'View cart', 'Purchase', 'Enjoyed'],
-        labels: ['did not bounce', 'looked at a product', 'put an item in a cart', 'completed a sale'],
         
         sections: [
             {
@@ -50,12 +47,12 @@ $(function () {
         ]
     };
 
-    $('#funnel-viz-default').BarChartHTML(real);
+    $('#funnel-viz-default').BarChartHTML(settings);
     $('#destroy').on('click', function () {
         $('#funnel-viz-default').BarChartHTML('destroy');
     });
     $('#init').on('click', function () {
-        $('#funnel-viz-default').BarChartHTML(real);
+        $('#funnel-viz-default').BarChartHTML(settings);
     });
 
 });
