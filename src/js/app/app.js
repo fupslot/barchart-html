@@ -27,6 +27,8 @@ $(function () {
         breakdown: [],
         // It breakes default color order
         colorIndexes: [2,0,1],
+        onlyOneEventCanBeSelected: true,
+        onlyChartCanBeSelected: true,
         
         events: ['Sign up', 'Add item', 'View cart', 'Purchase', 'Enjoyed'],
         
@@ -49,12 +51,17 @@ $(function () {
         ]
     };
 
-    $('#funnel-viz-default').BarChartHTML(us);
+    $('#funnel-viz-default')
+        .BarChartHTML(settings)
+        .on('highlight', function (e, sectionName, eventName, part, isSection) {
+            console.log(sectionName, eventName, part, isSection);
+        });
+
     $('#destroy').on('click', function () {
         $('#funnel-viz-default').BarChartHTML('destroy');
     });
     $('#init').on('click', function () {
-        $('#funnel-viz-default').BarChartHTML(us);
+        $('#funnel-viz-default').BarChartHTML(settings);
     });
 
 });

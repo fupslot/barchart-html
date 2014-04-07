@@ -14,7 +14,9 @@
         events:    [],
         labels:    [],
         sections:  [],
-        barColorName: 'blue'
+        barColorName: 'blue',
+        onlyOneEventCanBeSelected: false,
+        onlyChartCanBeSelected: false
     };
 
     function getParentSize (el) {
@@ -93,25 +95,46 @@
         labelOrientation = this.isBreakdown() ? 'verticaly' : 'horizontaly';
 
         onHighlightEvent = function (e) {
-            var el;
-            el = $(e.currentTarget).toggleClass('highlighted');
+            var el
+              , isTop
+              , isBottom
+              , isSection
+              , sectionName
+              , eventName;
+
+            el = $(e.target);
             
-            if (el.hasClass('highlighted')) {
-                // addHighlighted()
+            isTop     = el.hasClass('fun-bar-value-top');
+            isBottom  = el.hasClass('fun-bar-value-bottom');
+            isSection = _.isNumber(index);
+
+            sectionName = model.name;
+            eventName   = self.options.events[columnIndex];
+
+            if (isTop && !self.options.onlyChartCanBeSelected) {
+                el.toggleClass('highlighted');
+                self.$el.trigger('highlight', [sectionName, eventName, 'top', isSection]);
             }
-            else {
-                // removeHighlighted()
+
+            if (isBottom) {
+                if (self.options.onlyOneEventCanBeSelected) {
+                    self.$el
+                        .find('.fun-bar-value-bottom')
+                        .removeClass('highlighted');
+                }
+                el.toggleClass('highlighted');
+                self.$el.trigger('highlight', [sectionName, eventName, 'bottom', isSection]);
             }
         };
 
         $('<div>')
             .addClass('fun-bar-value')
             .addClass(getBarColor.call(this, index))
+            .on('click', onHighlightEvent)
             .append($('<div>')
                 .addClass('fun-bar-value-top')
                 .attr('role', 'bar')
-                .css('top', model.GHBar+'%')
-                .on('click', onHighlightEvent))
+                .css('top', model.GHBar+'%'))
             .append($('<div>')
                 .addClass('fun-bar-value-bottom')
                 .addClass('fun-label')
@@ -129,8 +152,7 @@
                         return isFirst ? '' : ' / ' + numeral(model.conversion).format('0.00') + '%';
                     }
                 })
-                .css('top', model.HBar+'%')
-                .on('click', onHighlightEvent))
+                .css('top', model.HBar+'%'))
             .appendTo(el);
     }
 
@@ -365,6 +387,7 @@
             obj = el.data('plugin_'+pluginName);
 
             if (obj !== void 0) {
+                el.off('highlight');
                 el.removeClass('fun-container breakdown one two three');
                 el.removeData('plugin_'+pluginName);
                 el.children().remove();
