@@ -264,14 +264,14 @@
         var eventSections = function (index) {
             var sections = [];
                         
-            options.sections.forEach(function (s) {
+            options.sections.forEach(function (s, i) {
                 var section, value, conv, HBar, GHBar, isFirst;
 
                 isFirst = index === 0;
-                value   = s.actual[index];
-                conv    = isFirst ? 0 : (s.actual[index] / s.actual[index - 1]) * 100;
-                HBar    = 100 - (value / s.actual[0]) * 100;
-                GHBar   = isFirst ? 0 : 100 - (s.actual[index - 1] / s.actual[0]) * 100;
+                value   = (s.actual[index]) || 0; // zero-devision
+                conv    = (isFirst ? 0 : (s.actual[index] / s.actual[index - 1]) * 100) || 0;
+                HBar    = (100 - (value / s.actual[0]) * 100) || 0;
+                GHBar   = (isFirst ? 0 : 100 - (s.actual[index - 1] / s.actual[0]) * 100) || 0;
 
                 section   = {};                
                 section.name  = s.name;

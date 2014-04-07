@@ -3,10 +3,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-recess');
   
   //config
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    
     connect: {
       server: {
         options: {
@@ -36,6 +39,13 @@ module.exports = function(grunt) {
         options: { compile: true },
         src: ['src/less/viz.less'],
         dest: 'dist/BarChartHTML.css'
+      }
+    },
+
+    uglify: {
+      js: {
+        src: ['./dist/BarChartHTML.js'],
+        dest: './dist/barcharthtml-v<%=pkg.version%>.min.js'
       }
     },
 
