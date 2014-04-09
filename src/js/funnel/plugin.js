@@ -240,7 +240,8 @@
             a = getTotalValue(curr, 'compare');
             b = getTotalValue(prev, 'compare');
 
-            return (a * b) !== 0 ? (b / a) * 100 : 0;
+            // return (a * b) !== 0 ? (b / a) * 100 : 0;
+            return (a * b) !== 0 ? a * 100 / b : 0;
         };
 
         var getConversionValue = function (curr, prev) {
