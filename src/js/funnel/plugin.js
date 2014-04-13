@@ -112,6 +112,12 @@
             eventName   = self.options.events[columnIndex];
 
             if (isTop && !self.options.onlyChartCanBeSelected) {
+                if (self.options.onlyOneEventCanBeSelected) {
+                    self.$el
+                        .find('.fun-bar-value-top')
+                        .not(el)
+                        .removeClass('highlighted');
+                }
                 el.toggleClass('highlighted');
                 self.$el.trigger('highlight', [sectionName, eventName, 'top', isSection]);
             }
@@ -120,6 +126,7 @@
                 if (self.options.onlyOneEventCanBeSelected) {
                     self.$el
                         .find('.fun-bar-value-bottom')
+                        .not(el)
                         .removeClass('highlighted');
                 }
                 el.toggleClass('highlighted');
