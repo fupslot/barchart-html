@@ -55,8 +55,8 @@ $(function () {
 
     $('#funnel-viz-default')
         .BarChartHTML(settings)
-        .on('highlight', function (e, sectionName, eventName, part, isSection) {
-            console.log(sectionName, eventName, part, isSection);
+        .on('highlight', function (e, sectionName, eventName, part, isSection, isHighlighted) {
+            console.log(sectionName, eventName, part, isSection, isHighlighted);
         });
 
     $('#destroy').on('click', function () {

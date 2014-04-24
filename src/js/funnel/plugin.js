@@ -100,7 +100,8 @@
               , isBottom
               , isSection
               , sectionName
-              , eventName;
+              , eventName
+              , isHighlighted;
 
             el = $(e.target);
             
@@ -119,7 +120,8 @@
                         .removeClass('highlighted');
                 }
                 el.toggleClass('highlighted');
-                self.$el.trigger('highlight', [sectionName, eventName, 'top', isSection]);
+                isHighlighted = el.hasClass('highlighted');
+                self.$el.trigger('highlight', [sectionName, eventName, 'top', isSection, isHighlighted]);
             }
 
             if (isBottom) {
@@ -130,7 +132,8 @@
                         .removeClass('highlighted');
                 }
                 el.toggleClass('highlighted');
-                self.$el.trigger('highlight', [sectionName, eventName, 'bottom', isSection]);
+                isHighlighted = el.hasClass('highlighted');
+                self.$el.trigger('highlight', [sectionName, eventName, 'bottom', isSection, isHighlighted]);
             }
         };
 
