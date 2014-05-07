@@ -156,7 +156,7 @@
                     title = isFirst ? model.name : model.name + '\r\n' + model.value + ' / ' + conv;
                     return title;
                 })
-                .attr('data-value', model.value)
+                .attr('data-value', numeral(model.value).format('0,00'))
                 .attr('data-conv', function() {
                     if (self.options.showBreakdownConversion) {
                         return isFirst ? '' : ' / ' + numeral(model.conversion).format('0.00') + '%';
