@@ -87,10 +87,15 @@
         var self
           , labelOrientation
           , isFirst
+          , formattedValue
+          , formattedConversion
           , onHighlightEvent;
 
         self    = this;
         isFirst = columnIndex === 0;
+
+        formattedValue      = numeral(model.value).format('0,00');
+        formattedConversion = numeral(model.conversion).format('0,00') + '%';
 
         labelOrientation = this.isBreakdown() ? 'verticaly' : 'horizontaly';
 
@@ -151,15 +156,14 @@
                 .addClass(labelOrientation)
                 .attr('role', 'bar')
                 .attr('title', function(){
-                    var title, conv;
-                    conv  = numeral(model.conversion).format('0.00') + '%';
-                    title = isFirst ? model.name : model.name + '\r\n' + model.value + ' / ' + conv;
+                    var title;
+                    title = isFirst ? model.name : model.name + '\r\n' + formattedValue + ' / ' + formattedConversion;
                     return title;
                 })
-                .attr('data-value', numeral(model.value).format('0,00'))
+                .attr('data-value', formattedValue)
                 .attr('data-conv', function() {
                     if (self.options.showBreakdownConversion) {
-                        return isFirst ? '' : ' / ' + numeral(model.conversion).format('0.00') + '%';
+                        return isFirst ? '' : ' / ' + formattedConversion;
                     }
                 })
                 .css('top', model.HBar+'%'))
